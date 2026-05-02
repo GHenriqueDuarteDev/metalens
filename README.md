@@ -56,23 +56,23 @@ metalens/
 
 Aqui está o seu roadmap passo a passo para desenvolver o MetaLens, focado em pequenas vitórias que mantêm a motivação em alta:
 
-Fase 1: Fundação e Design System (A Preparação)
-Antes de lidar com dados, o ambiente precisa existir.
+Fase 1: Fundação e Design System (A Preparação) ✅
+Antes de lidar com dados, o ambiente precisa existir. ✅
 
-Setup do Next.js: Inicializar o projeto com App Router, TypeScript e Tailwind CSS.
+Setup do Next.js: Inicializar o projeto com App Router, TypeScript e Tailwind CSS. ✅
 
-Configuração de UI: Instalar o shadcn/ui, configurar o tema escuro (Dark Mode) como padrão nativo e adicionar as fontes monoespaçadas.
+Configuração de UI: Instalar o shadcn/ui, configurar o tema escuro (Dark Mode) como padrão nativo e adicionar as fontes monoespaçadas. ✅
 
-Setup do Banco: Configurar o Drizzle ORM e conectar ao PostgreSQL. Criar as tabelas Users e Reports (com a famosa coluna JSONB), e rodar a primeira migration para deixar o banco pronto, mesmo que não vá usá-lo imediatamente.
+Setup do Banco: Configurar o Drizzle ORM e conectar ao PostgreSQL do Supabase. Criar as tabelas Users e Reports (com a famosa coluna JSONB), e rodar a primeira migration para deixar o banco pronto, mesmo que não vá usá-lo imediatamente. ✅
 
-Fase 2: O Motor Core (Upload e Extração)
+Fase 2: O Motor Core (Upload e Extração) ✅
 Aqui você prova que o Next.js consegue processar arquivos de forma elegante.
 
-O Front do Upload: Criar o componente visual do Dropzone na página inicial (onde o usuário arrasta a foto).
+O Front do Upload: Criar o componente visual do Dropzone na página inicial (onde o usuário arrasta a foto). ✅
 
-A Server Action (Fake): Criar a ação que recebe o FormData. Num primeiro momento, apenas imprima no terminal do servidor (console.log) para confirmar que o arquivo chegou inteiro.
+A Server Action (Fake): Criar a ação que recebe o FormData. Num primeiro momento, apenas imprima no terminal do servidor (console.log) para confirmar que o arquivo chegou inteiro. ✅
 
-O Cérebro (exifr): Integrar a biblioteca exifr. Passar o buffer da imagem para ela e conseguir extrair o objeto JSON com os metadados brutos.
+O Cérebro (exifr): Integrar a biblioteca exifr. Passar o buffer da imagem para ela e conseguir extrair o objeto JSON com os metadados brutos. ✅
 
 A Ponte: Conectar a Server Action ao Drizzle para que o JSON extraído seja salvo na tabela Reports do PostgreSQL, gerando o UUID.
 

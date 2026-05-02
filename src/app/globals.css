@@ -85,7 +85,7 @@
 
 .dark {
   /* Fundo Carvão (Dark puro e minimalista) */
-  --background: oklch(0.15 0 0);
+  --background: oklch(17.764% 0.00002 271.152);
   --foreground: oklch(0.98 0 0);
   
   /* Cards levemente destacados do fundo */

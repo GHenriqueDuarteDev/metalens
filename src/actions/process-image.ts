@@ -1,6 +1,8 @@
 "use server";
 
 import exifr from "exifr";
+import { db } from "@/src/lib/db";
+import { reports } from "@/src/lib/db/schema";
 
 export async function processImageAction(formData: FormData) {
   try {
@@ -10,8 +12,6 @@ export async function processImageAction(formData: FormData) {
 
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
-
-    console.log(`🔍 Extração Total (God Mode) em: ${file.name}`);
 
     //Forçando o exifr a ler todos os segmentos de metadados conhecidos
     const metadata = await exifr.parse(buffer, {
@@ -25,35 +25,22 @@ export async function processImageAction(formData: FormData) {
       mergeOutput: false, // Mantém os dados separados por categoria para organizar melhor depois
     });
 
-    const gpsData = metadata?.gps;
+    const cameraModelString = metadata?.ifd0?.Model || metadata?.exif?.Model || null;
 
-    console.log("🚀 --- RESULTADO DA EXTRAÇÃO RICA ---");
+    const safeExifData = metadata;
 
-    if (metadata) {
-      console.log("Segmentos detectados:", Object.keys(metadata));
-
-      const cameraInfo = metadata.ifd0 || metadata.exif;
-      console.log("📷 Aparelho:", cameraInfo?.Make, cameraInfo?.Model);
-
-      if (metadata.xmp) {
-        console.log("🚨 Rastro de Edição Encontrado (XMP):", metadata.xmp?.CreatorTool || "Sim");
-      }
-    }
-
-    if (gpsData) {
-      console.log("📍 GPS Localizado:", `Lat: ${gpsData.latitude}, Long: ${gpsData.longitude}`);
-    }
-    console.log("-----------------------------------");
+    const [newReport] = await db
+      .insert(reports)
+      .values({
+        cameraModel: cameraModelString,
+        exifData: safeExifData,
+      })
+      .returning({ id: reports.id });
 
     return {
       success: true,
-      summary: {
-        model: metadata?.ifd0?.Model || metadata?.exif?.Model || "Desconhecido",
-        hasGps: !!gpsData,
-        date: metadata?.exif?.DateTimeOriginal
-          ? new Date(metadata.exif.DateTimeOriginal).toLocaleDateString("pt-BR")
-          : "Desconhecida",
-      },
+      reportId: newReport.id,
+      rawData: safeExifData,
     };
   } catch (error) {
     console.error("❌ Erro fatal na extração:", error);

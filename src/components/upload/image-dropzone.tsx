@@ -4,39 +4,42 @@ import { useCallback, useState } from "react";
 import { useDropzone, FileRejection } from "react-dropzone";
 import { UploadCloud, Loader2, AlertTriangle } from "lucide-react";
 import { processImageAction } from "@/src/actions/process-image";
+import { useRouter } from "next/navigation";
 
 const MAX_FILE_SIZE = 50 * 1024 * 1024;
 
 export default function ImageDropzone() {
   const [isUploading, setIsUploading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const router = useRouter();
 
-  const onDrop = useCallback(async (acceptedFiles: File[]) => {
-    setErrorMessage(null);
-    const file = acceptedFiles[0];
-    if (!file) return;
+  const onDrop = useCallback(
+    async (acceptedFiles: File[]) => {
+      setErrorMessage(null);
+      const file = acceptedFiles[0];
+      if (!file) return;
 
-    setIsUploading(true);
-    const formData = new FormData();
-    formData.append("image", file);
+      setIsUploading(true);
+      const formData = new FormData();
+      formData.append("image", file);
 
-    try {
-      const response = await processImageAction(formData);
+      try {
+        const response = await processImageAction(formData);
 
-      if (response.error) {
-        setErrorMessage(response.error);
-      } else if (response.summary) {
-        // Alerta provisório
-        alert(
-          `Análise Concluída!\n\nCâmera: ${response.summary.model}\nData: ${response.summary.date}\nPossui GPS: ${response.summary.hasGps ? "Sim 📍" : "Não"}`
-        );
+        if (response.error) {
+          setErrorMessage(response.error);
+          setIsUploading(false);
+        } else if (response.rawData) {
+          router.push(`/analytics/${response.reportId}`);
+        }
+      } catch {
+        setErrorMessage("Erro de conexão ao analisar a imagem.");
+      } finally {
+        setIsUploading(false);
       }
-    } catch {
-      setErrorMessage("Erro de conexão ao analisar a imagem.");
-    } finally {
-      setIsUploading(false);
-    }
-  }, []);
+    },
+    [router]
+  );
 
   // Intercepta arquivos muito grandes ou com formatos errados na hora!
   const onDropRejected = useCallback((fileRejections: FileRejection[]) => {

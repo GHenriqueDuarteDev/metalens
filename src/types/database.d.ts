@@ -36,7 +36,9 @@ export interface ExifDataPayload {
     [key: string]: unknown;
   };
   xmp?: Record<string, unknown>;
+  xmpMM?: Record<string, unknown>;
   iptc?: Record<string, unknown>;
   icc?: Record<string, unknown>;
   makerNote?: Record<string, unknown>;
+  photoshop?: Record<string, unknown>;
 }

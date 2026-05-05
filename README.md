@@ -74,18 +74,18 @@ A Server Action (Fake): Criar a ação que recebe o FormData. Num primeiro momen
 
 O Cérebro (exifr): Integrar a biblioteca exifr. Passar o buffer da imagem para ela e conseguir extrair o objeto JSON com os metadados brutos. ✅
 
-A Ponte: Conectar a Server Action ao Drizzle para que o JSON extraído seja salvo na tabela Reports do PostgreSQL, gerando o UUID.
+A Ponte: Conectar a Server Action ao Drizzle para que o JSON extraído seja salvo na tabela Reports do PostgreSQL, gerando o UUID. ✅
 
 Fase 3: O Dashboard Dinâmico (A Vitrine)
-Com os dados chegando no banco, é hora de dar vida aos cards e ícones que você escolheu.
+Com os dados chegando no banco, é hora de dar vida aos cards e ícones que você escolheu. ✅
 
-A Rota Dinâmica: Criar a estrutura de pastas app/analise/[id]/page.tsx. Fazer a página ler o ID da URL e buscar o JSON correspondente no PostgreSQL.
+A Rota Dinâmica: Criar a estrutura de pastas app/analise/[id]/page.tsx. Fazer a página ler o ID da URL e buscar o JSON correspondente no PostgreSQL. ✅
 
-O Tratamento do JSON: Criar as funções de utilidade que pegam o JSON caótico e o separam em categorias (Câmera, Localização, Configurações Técnicas).
+O Tratamento do JSON: Criar as funções de utilidade que pegam o JSON caótico e o separam em categorias (Câmera, Localização, Configurações Técnicas). ✅
 
-A Interface de Cards: Construir os componentes visuais. Um card com ícone de satélite para o GPS, um card com ícone de lente para o hardware.
+A Interface de Cards: Construir os componentes visuais. Um card com ícone de satélite para o GPS, um card com ícone de lente para o hardware. ✅
 
-Empty States: Programar os cards para sumirem ou mostrarem mensagens amigáveis ("Dados não encontrados") caso a foto não tenha aquela informação específica.
+Empty States: Programar os cards para sumirem ou mostrarem mensagens amigáveis ("Dados não encontrados") caso a foto não tenha aquela informação específica. ✅
 
 Fase 4: Compartilhamento e Otimização (A UX Avançada)
 O projeto já funciona, agora vamos deixá-lo com cara de produção.

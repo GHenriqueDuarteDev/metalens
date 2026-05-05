@@ -18,7 +18,14 @@ export default async function RawCard({ params }: { params: Promise<{ id: string
       </CardHeader>
       <Separator className="p-0 m-0" />
       <CardContent>
-        <pre className="text-sm font-mono text-green-400/90 whitespace-pre-wrap break-all">
+        <pre
+          className="text-sm font-mono bg-background rounded-2xl text-green-400/90 whitespace-pre-wrap break-all scroll-smooth overflow-auto max-h-[calc(100vh-250px)] overflow-y-auto
+  [&::-webkit-scrollbar]:w-2
+  [&::-webkit-scrollbar-track]:bg-gray-100
+  [&::-webkit-scrollbar-thumb]:bg-gray-300
+  dark:[&::-webkit-scrollbar-track]:bg-neutral-700
+  dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500"
+        >
           {JSON.stringify(report.exifData, null, 2)}
         </pre>
       </CardContent>

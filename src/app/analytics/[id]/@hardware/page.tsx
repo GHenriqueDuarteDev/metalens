@@ -11,9 +11,6 @@ export default async function HardwareCard({ params }: { params: Promise<{ id: s
 
   const ifd0 = report.exifData.ifd0;
 
-  if (!report || !ifd0) {
-    return <div>Sem dados de camera</div>;
-  }
   return (
     <Card className="w-full min-w-3xs max-w-2xl inset-shadow-sm inset-shadow-foreground/5 shadow-xl/70 shadow-accent p-2 bg-linear-to-br from-accent to-background">
       <CardHeader className="flex items-center gap-4 pt-2">
@@ -26,30 +23,32 @@ export default async function HardwareCard({ params }: { params: Promise<{ id: s
           <TableBody className="text-sm font-mono text-green-400/90 whitespace-pre-wrap break-all">
             <TableRow className="font-medium font-mono">
               <TableCell className="opacity-70">Fabricante:</TableCell>
-              <TableCell className="text-end">{ifd0.Make}</TableCell>
+              <TableCell className="text-end">{ifd0?.Make || "Sem metadados."}</TableCell>
             </TableRow>
             <TableRow>
               <TableCell className="opacity-70">Modelo:</TableCell>
-              <TableCell className="text-end">{ifd0.Model}</TableCell>
+              <TableCell className="text-end">{ifd0?.Model || "Sem metadados."}</TableCell>
             </TableRow>
             <TableRow>
               <TableCell className="opacity-70">Data da captura:</TableCell>
-              <TableCell className="text-end">{dateFormated(ifd0.ModifyDate!)}</TableCell>
+              <TableCell className="text-end">
+                {ifd0?.ModifyDate ? dateFormated(ifd0?.ModifyDate) : "Sem metadados."}
+              </TableCell>
             </TableRow>
             <TableRow>
               <TableCell className="opacity-70">Posição:</TableCell>
-              <TableCell className="text-end">{ifd0.Orientation}</TableCell>
+              <TableCell className="text-end">{ifd0?.Orientation || "Sem metadados."}</TableCell>
             </TableRow>
             <TableRow>
               <TableCell className="opacity-70">Largura da imagem:</TableCell>
               <TableCell className="text-end">
-                {ifd0.ImageWidth ? `${ifd0.ImageWidth}px` : "Metadado não encontrado !"}
+                {ifd0?.ImageWidth ? `${ifd0?.ImageWidth}px` : "Sem metadados."}
               </TableCell>
             </TableRow>
             <TableRow>
               <TableCell className="opacity-70">Altura da imagem:</TableCell>
               <TableCell className="text-end">
-                {ifd0.ImageHeight ? `${ifd0.ImageWidth}px` : "Metadado não encontrado !"}
+                {ifd0?.ImageHeight ? `${ifd0?.ImageHeight}px` : "Sem metadados."}
               </TableCell>
             </TableRow>
           </TableBody>

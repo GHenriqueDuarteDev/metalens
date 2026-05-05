@@ -5,10 +5,6 @@ import { Shield, Terminal } from "lucide-react";
 export default async function Footer({ id }: { id: string }) {
   const report = await getReportById(id);
 
-  if (!report || !report.exifData?.ifd0) {
-    return <div>Erro ao buscar informações</div>;
-  }
-
   const integrity = analyzeIntegrity(report?.exifData);
 
   return (
@@ -46,7 +42,7 @@ export default async function Footer({ id }: { id: string }) {
                 </span>
               ) : (
                 <span className="text-green-500 border border-green-500/30 px-2 py-0.5 rounded bg-green-500/10">
-                  VERIFICADA (Original)
+                  {report.exifData?.ifd0 ? "VERIFICADA (Original)" : "INDETERMINADO"}
                 </span>
               )}
             </span>

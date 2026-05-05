@@ -10,6 +10,7 @@ export default async function MapCard({ params }: { params: Promise<{ id: string
 
   const lat = report?.exifData?.gps?.latitude as number | undefined;
   const lng = report?.exifData?.gps?.longitude as number | undefined;
+  const direction = report?.exifData?.gps?.GPSImgDirection as number | undefined;
 
   if (!report || !lat || !lng) {
     return (
@@ -37,7 +38,7 @@ export default async function MapCard({ params }: { params: Promise<{ id: string
       <Separator className="p-0 m-0" />
       <CardContent>
         <div className="relative flex-1 h-64 w-full rounded-2xl overflow-hidden">
-          <MapWrapper lat={lat} lng={lng} />
+          <MapWrapper lat={lat} lng={lng} direction={direction} />
         </div>
       </CardContent>
       <CardFooter>

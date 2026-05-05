@@ -81,7 +81,9 @@ export default async function CaptureCard({ params }: { params: Promise<{ id: st
 
             <TableRow>
               <TableCell className="opacity-70">Brilho:</TableCell>
-              <TableCell className="text-end">{exif.BrightnessValue}</TableCell>
+              <TableCell className="text-end">
+                {exif.BrightnessValue ? exif.BrightnessValue : "Metadado não encontrado !"}
+              </TableCell>
             </TableRow>
 
             <TableRow>

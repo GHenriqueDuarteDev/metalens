@@ -16,8 +16,9 @@ const LeafletMap = dynamic(() => import("./gps-map"), {
 interface MapWrapperProps {
   lat: number;
   lng: number;
+  direction?: number;
 }
 
-export default function MapWrapper({ lat, lng }: MapWrapperProps) {
-  return <LeafletMap lat={lat} lng={lng} />;
+export default function MapWrapper({ lat, lng, direction }: MapWrapperProps) {
+  return <LeafletMap lat={lat} lng={lng} direction={direction} />;
 }

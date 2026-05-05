@@ -14,7 +14,7 @@ export async function processImageAction(formData: FormData) {
     const buffer = Buffer.from(arrayBuffer);
 
     //Forçando o exifr a ler todos os segmentos de metadados conhecidos
-    const metadata = await exifr.parse(buffer, {
+    const rawMetadata = await exifr.parse(buffer, {
       exif: true, // Dados da Câmera (Abertura, ISO, Lente)
       gps: true, // Coordenadas geográficas
       xmp: true, // Metadados do Adobe Lightroom/Photoshop
@@ -25,9 +25,15 @@ export async function processImageAction(formData: FormData) {
       mergeOutput: false, // Mantém os dados separados por categoria para organizar melhor depois
     });
 
-    const cameraModelString = metadata?.ifd0?.Model || metadata?.exif?.Model || null;
+    if (!rawMetadata) {
+      throw new Error("Não foi possivel extrair os metadados");
+    }
 
-    const safeExifData = metadata;
+    //essa sanitização e necessaria pois alguns fabricantes adicionam "null bytes" como \u0000 nos campos e o postgreSQL rejeita
+    const sanitizedString = JSON.stringify(rawMetadata).replace(/\\u0000/g, "");
+    const safeExifData = JSON.parse(sanitizedString);
+
+    const cameraModelString = rawMetadata?.ifd0?.Model || rawMetadata?.exif?.Model || null;
 
     const [newReport] = await db
       .insert(reports)

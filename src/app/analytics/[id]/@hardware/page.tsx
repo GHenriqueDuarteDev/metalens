@@ -42,15 +42,15 @@ export default async function HardwareCard({ params }: { params: Promise<{ id: s
             </TableRow>
             <TableRow>
               <TableCell className="opacity-70">Largura da imagem:</TableCell>
-              <TableCell className="text-end">{ifd0.ImageWidth}px</TableCell>
+              <TableCell className="text-end">
+                {ifd0.ImageWidth ? `${ifd0.ImageWidth}px` : "Metadado não encontrado !"}
+              </TableCell>
             </TableRow>
             <TableRow>
               <TableCell className="opacity-70">Altura da imagem:</TableCell>
-              <TableCell className="text-end">{ifd0.ImageHeight}px</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell className="opacity-70">Modelo:</TableCell>
-              <TableCell className="text-end">{ifd0.Model}</TableCell>
+              <TableCell className="text-end">
+                {ifd0.ImageHeight ? `${ifd0.ImageWidth}px` : "Metadado não encontrado !"}
+              </TableCell>
             </TableRow>
           </TableBody>
         </Table>

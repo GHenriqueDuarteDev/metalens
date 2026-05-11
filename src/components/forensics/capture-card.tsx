@@ -1,9 +1,9 @@
 import { Card, CardContent, CardHeader } from "@/src/components/ui/card";
-import { getReportById } from "@/src/lib/forensics";
 import { Image as ImageIcon } from "lucide-react";
 import { Separator } from "@/src/components/ui/separator";
 import { Table, TableBody, TableCell, TableRow } from "@/src/components/ui/table";
 import dateFormated from "@/src/lib/formateUtcDate";
+import { returnPayload } from "@/src/types/database";
 
 function formatExposureTime(value: number) {
   if (!value) return "-";
@@ -11,9 +11,8 @@ function formatExposureTime(value: number) {
   return `1/${denominator}s`;
 }
 
-export default async function CaptureCard({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = await params;
-  const report = await getReportById(id);
+export default async function CaptureCard({ report }: { report: returnPayload }) {
+  if (!report) return <div>Sem dados</div>;
 
   const exif = report?.exifData?.exif;
 

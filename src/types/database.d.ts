@@ -1,3 +1,12 @@
+export interface returnPayload {
+  id: string;
+  userId: string | null;
+  visibility: "unlisted" | "public" | "private";
+  cameraModel: string | null;
+  exifData: ExifDataPayload;
+  createdAt: Date;
+}
+
 export interface ExifDataPayload {
   ifd0?: {
     Make?: string;

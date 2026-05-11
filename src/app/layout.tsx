@@ -13,6 +13,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  icons: {
+    icon: "./../favicon.svg",
+  },
   title: "MetaLens | Análise Forense",
   description: "Extração e análise de metadados de imagens",
 };

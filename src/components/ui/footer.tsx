@@ -1,9 +1,9 @@
-import { getReportById } from "@/src/lib/forensics";
 import { analyzeIntegrity } from "@/src/lib/integrity";
+import { returnPayload } from "@/src/types/database";
 import { Shield, Terminal } from "lucide-react";
 
-export default async function Footer({ id }: { id: string }) {
-  const report = await getReportById(id);
+export default async function Footer({ report }: { report: returnPayload }) {
+  if (!report) return <div>Sem dados</div>;
 
   const integrity = analyzeIntegrity(report?.exifData);
 

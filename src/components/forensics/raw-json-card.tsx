@@ -1,13 +1,11 @@
 import { Card, CardContent, CardHeader } from "@/src/components/ui/card";
-import { getReportById } from "@/src/lib/forensics";
+
 import { Terminal } from "lucide-react";
 import { Separator } from "@/src/components/ui/separator";
 import { RawCopyButton } from "@/src/components/forensics/row-copy-text";
+import { returnPayload } from "@/src/types/database";
 
-export default async function RawCard({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = await params;
-  const report = await getReportById(id);
-
+export default async function RawCard({ report }: { report: returnPayload }) {
   const exifData = report.exifData;
 
   if (!report || !exifData) {

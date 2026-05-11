@@ -1,13 +1,10 @@
 import { Card, CardContent, CardFooter, CardHeader } from "@/src/components/ui/card";
-import { getReportById } from "@/src/lib/forensics";
 import { MapPin, Navigation } from "lucide-react";
 import { Separator } from "@/src/components/ui/separator";
 import MapWrapper from "@/src/components/forensics/map-wrapper";
+import { returnPayload } from "@/src/types/database";
 
-export default async function MapCard({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = await params;
-  const report = await getReportById(id);
-
+export default async function MapCard({ report }: { report: returnPayload }) {
   const lat = report?.exifData?.gps?.latitude as number | undefined;
   const lng = report?.exifData?.gps?.longitude as number | undefined;
   const direction = report?.exifData?.gps?.GPSImgDirection as number | undefined;

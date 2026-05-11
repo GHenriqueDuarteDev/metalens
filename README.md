@@ -56,36 +56,36 @@ metalens/
 
 Aqui está o seu roadmap passo a passo para desenvolver o MetaLens, focado em pequenas vitórias que mantêm a motivação em alta:
 
-Fase 1: Fundação e Design System (A Preparação)
-Antes de lidar com dados, o ambiente precisa existir.
+Fase 1: Fundação e Design System (A Preparação) ✅
+Antes de lidar com dados, o ambiente precisa existir. ✅
 
-Setup do Next.js: Inicializar o projeto com App Router, TypeScript e Tailwind CSS.
+Setup do Next.js: Inicializar o projeto com App Router, TypeScript e Tailwind CSS. ✅
 
-Configuração de UI: Instalar o shadcn/ui, configurar o tema escuro (Dark Mode) como padrão nativo e adicionar as fontes monoespaçadas.
+Configuração de UI: Instalar o shadcn/ui, configurar o tema escuro (Dark Mode) como padrão nativo e adicionar as fontes monoespaçadas. ✅
 
-Setup do Banco: Configurar o Drizzle ORM e conectar ao PostgreSQL. Criar as tabelas Users e Reports (com a famosa coluna JSONB), e rodar a primeira migration para deixar o banco pronto, mesmo que não vá usá-lo imediatamente.
+Setup do Banco: Configurar o Drizzle ORM e conectar ao PostgreSQL do Supabase. Criar as tabelas Users e Reports (com a famosa coluna JSONB), e rodar a primeira migration para deixar o banco pronto, mesmo que não vá usá-lo imediatamente. ✅
 
-Fase 2: O Motor Core (Upload e Extração)
+Fase 2: O Motor Core (Upload e Extração) ✅
 Aqui você prova que o Next.js consegue processar arquivos de forma elegante.
 
-O Front do Upload: Criar o componente visual do Dropzone na página inicial (onde o usuário arrasta a foto).
+O Front do Upload: Criar o componente visual do Dropzone na página inicial (onde o usuário arrasta a foto). ✅
 
-A Server Action (Fake): Criar a ação que recebe o FormData. Num primeiro momento, apenas imprima no terminal do servidor (console.log) para confirmar que o arquivo chegou inteiro.
+A Server Action (Fake): Criar a ação que recebe o FormData. Num primeiro momento, apenas imprima no terminal do servidor (console.log) para confirmar que o arquivo chegou inteiro. ✅
 
-O Cérebro (exifr): Integrar a biblioteca exifr. Passar o buffer da imagem para ela e conseguir extrair o objeto JSON com os metadados brutos.
+O Cérebro (exifr): Integrar a biblioteca exifr. Passar o buffer da imagem para ela e conseguir extrair o objeto JSON com os metadados brutos. ✅
 
-A Ponte: Conectar a Server Action ao Drizzle para que o JSON extraído seja salvo na tabela Reports do PostgreSQL, gerando o UUID.
+A Ponte: Conectar a Server Action ao Drizzle para que o JSON extraído seja salvo na tabela Reports do PostgreSQL, gerando o UUID. ✅
 
 Fase 3: O Dashboard Dinâmico (A Vitrine)
-Com os dados chegando no banco, é hora de dar vida aos cards e ícones que você escolheu.
+Com os dados chegando no banco, é hora de dar vida aos cards e ícones que você escolheu. ✅
 
-A Rota Dinâmica: Criar a estrutura de pastas app/analise/[id]/page.tsx. Fazer a página ler o ID da URL e buscar o JSON correspondente no PostgreSQL.
+A Rota Dinâmica: Criar a estrutura de pastas app/analise/[id]/page.tsx. Fazer a página ler o ID da URL e buscar o JSON correspondente no PostgreSQL. ✅
 
-O Tratamento do JSON: Criar as funções de utilidade que pegam o JSON caótico e o separam em categorias (Câmera, Localização, Configurações Técnicas).
+O Tratamento do JSON: Criar as funções de utilidade que pegam o JSON caótico e o separam em categorias (Câmera, Localização, Configurações Técnicas). ✅
 
-A Interface de Cards: Construir os componentes visuais. Um card com ícone de satélite para o GPS, um card com ícone de lente para o hardware.
+A Interface de Cards: Construir os componentes visuais. Um card com ícone de satélite para o GPS, um card com ícone de lente para o hardware. ✅
 
-Empty States: Programar os cards para sumirem ou mostrarem mensagens amigáveis ("Dados não encontrados") caso a foto não tenha aquela informação específica.
+Empty States: Programar os cards para sumirem ou mostrarem mensagens amigáveis ("Dados não encontrados") caso a foto não tenha aquela informação específica. ✅
 
 Fase 4: Compartilhamento e Otimização (A UX Avançada)
 O projeto já funciona, agora vamos deixá-lo com cara de produção.

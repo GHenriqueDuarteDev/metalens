@@ -58,9 +58,6 @@ export default function LandingPage() {
         {/* Seção Direita - Upload */}
         <div className="p-8 md:p-12 flex flex-col">
           <h2 className="text-2xl font-semibold mb-6 text-primary-foreground">Envie sua imagem</h2>
-
-          {/* Container temporário para o futuro Dropzone/Input */}
-
           <ImageDropzone />
         </div>
       </div>

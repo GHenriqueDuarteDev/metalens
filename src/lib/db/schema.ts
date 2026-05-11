@@ -1,3 +1,4 @@
+import { ExifDataPayload } from "@/src/types/database";
 import { pgTable, uuid, varchar, timestamp, jsonb, pgEnum } from "drizzle-orm/pg-core";
 
 // Enum para controlar o status de visibilidade do relatório
@@ -23,7 +24,7 @@ export const reports = pgTable("reports", {
   cameraModel: varchar("camera_model", { length: 255 }),
 
   // O coração do sistema: JSONB para flexibilidade total dos metadados extraídos
-  exifData: jsonb("exif_data").notNull(),
+  exifData: jsonb("exif_data").$type<ExifDataPayload>().notNull(),
 
   createdAt: timestamp("created_at").defaultNow().notNull(),
 }).enableRLS();

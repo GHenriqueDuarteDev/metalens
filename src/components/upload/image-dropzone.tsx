@@ -1,5 +1,6 @@
 "use client";
 
+import exifr from "exifr";
 import { useCallback, useState } from "react";
 import { useDropzone, FileRejection } from "react-dropzone";
 import { UploadCloud, Loader2, AlertTriangle } from "lucide-react";
@@ -24,7 +25,17 @@ export default function ImageDropzone() {
       formData.append("image", file);
 
       try {
-        const response = await processImageAction(formData);
+        const rawMetadata = await exifr.parse(file, {
+          exif: true, // Dados da Câmera (Abertura, ISO, Lente)
+          gps: true, // Coordenadas geográficas
+          xmp: true, // Metadados do Adobe Lightroom/Photoshop
+          iptc: true, // Direitos autorais e descrições jornalísticas
+          icc: true, // Perfil de cor (Ex: Display P3 da Apple)
+          jfif: true, // Resolução base do JPEG
+          makerNote: true, // Dados ocultos proprietários (Apple, Samsung, Canon)
+          mergeOutput: false, // Mantém os dados separados por categoria para organizar melhor depois
+        });
+        const response = await processImageAction(rawMetadata, file.name);
 
         if (response.error) {
           setErrorMessage(response.error);

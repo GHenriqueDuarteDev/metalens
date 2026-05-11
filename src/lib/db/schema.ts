@@ -23,6 +23,9 @@ export const reports = pgTable("reports", {
   // Coluna rígida para indexação e buscas rápidas
   cameraModel: varchar("camera_model", { length: 255 }),
 
+  // Coluna para persistir o nome do arquivo
+  archiveName: varchar("archive_name", { length: 255 }),
+
   // O coração do sistema: JSONB para flexibilidade total dos metadados extraídos
   exifData: jsonb("exif_data").$type<ExifDataPayload>().notNull(),
 

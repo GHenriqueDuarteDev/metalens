@@ -1,115 +1,111 @@
-metalens/
-├── src/
-│ ├── actions/ # ⚙️ Mutações no Servidor (Server Actions)
-│ │ ├── process-image.ts # Recebe imagem, roda o 'exifr' no buffer, salva no DB
-│ │ └── claim-reports.ts # Lê o cookie de visitante e atrela análises ao user logado
-│ │
-│ ├── app/ # 🌐 App Router
-│ │ ├── (public)/ # Route Group: Páginas abertas
-│ │ │ ├── page.tsx # A Landing Page com o Dropzone gigante
-│ │ │ └── layout.tsx # Header com botão "Entrar"
-│ │ │
-│ │ ├── analise/[id]/ # O Dashboard Dinâmico (Acessível via Link)
-│ │ │ ├── layout.tsx # Orquestra os cards usando Slots (CSS Grid)
-│ │ │ ├── @header/page.tsx # Título, modelo da câmera e botões de compartilhamento
-│ │ │ ├── @hardware/page.tsx # Card visual com ícones (Abertura, ISO, Lente)
-│ │ │ ├── @mapa/page.tsx # Slot condicional para o mapa (Leaflet)
-│ │ │ ├── @raw/page.tsx # Accordion/Lista com os dados técnicos brutos
-│ │ │ ├── page.tsx # Fallback
-│ │ │ ├── loading.tsx # Skeletons dos cards para transição suave
-│ │ │ └── opengraph-image.tsx# Desenha a miniatura do WhatsApp dinamicamente
-│ │ │
-│ │ ├── (protected)/ # Route Group: Exige autenticação
-│ │ │ └── dashboard/ # Galeria privada do usuário
-│ │ │ └── page.tsx # Lista todos os relatórios do user_id
-│ │ │
-│ │ ├── api/ # Route Handlers
-│ │ │ └── auth/
-│ │ │ └── [...nextauth]/route.ts # Motor do NextAuth (Google/GitHub/Credentials)
-│ │ │
-│ │ ├── globals.css # Tailwind e Dark Mode
-│ │ └── layout.tsx # Root Layout (Providers e Fontes)
-│ │
-│ ├── components/ # 🧩 O Lego da Interface
-│ │ ├── ui/ # shadcn/ui (Cards, Buttons, Dialogs)
-│ │ ├── upload/ # Dropzone com Drag & Drop (Client Component)
-│ │ └── forensics/ # Componentes de domínio
-│ │ ├── hardware-card.tsx # Card estilizado com Lucide Icons
-│ │ └── gps-map.tsx # Renderização do mapa
-│ │
-│ ├── lib/ # 🛠️ O Motor de Engenharia
-│ │ ├── db/ # Drizzle ORM
-│ │ │ ├── schema.ts # Definição das tabelas Users e Reports (com JSONB)
-│ │ │ └── index.ts # Conexão com o PostgreSQL
-│ │ ├── auth.ts # Configurações do NextAuth e Callbacks
-│ │ ├── forensics.ts # Funções que chamam o 'exifr' isoladas das Actions
-│ │ └── utils.ts # Utilitários (tradutor de chaves do EXIF, formatadores)
-│ │
-│ └── types/ # 🏷️ TypeScript Estrito
-│ └── database.d.ts # Tipagem da coluna JSONB para ajudar no Front-end
-│
-├── middleware.ts # 🛡️ Edge Middleware (Protege rotas do painel privado)
-├── tailwind.config.ts # Cores (Carvão e Laranja) e Tipografia
-└── drizzle.config.ts # Configuração das migrations do ORM
+# 🛡️ MetaLens — Digital Forensics Analysis Engine
 
-==================================================================================================================================
+O **MetaLens** é uma plataforma avançada de perícia digital focada na extração, análise e auditoria de metadados de imagens. O sistema permite que investigadores e entusiastas analisem a "certidão de nascimento" de arquivos fotográficos, identificando origens, coordenadas geográficas e possíveis manipulações de integridade.
 
-Aqui está o seu roadmap passo a passo para desenvolver o MetaLens, focado em pequenas vitórias que mantêm a motivação em alta:
+## 🚀 Tecnologias Utilizadas
 
-Fase 1: Fundação e Design System (A Preparação) ✅
-Antes de lidar com dados, o ambiente precisa existir. ✅
+- **Framework:** [Next.js 15+](https://nextjs.org/) (App Router & Server Actions)
+- **Estilização:** Tailwind CSS + Shadcn/UI
+- **Banco de Dados:** PostgreSQL via [Supabase](https://supabase.com/)
+- **ORM:** [Drizzle ORM](https://orm.drizzle.team/)
+- **Mapas:** [Leaflet.js](https://leafletjs.org/) (com React-Leaflet)
+- **Extração de Dados:** [Exifr](https://github.com/MikeKroz/exifr)
+- **Gerenciador de Pacotes:** pnpm
 
-Setup do Next.js: Inicializar o projeto com App Router, TypeScript e Tailwind CSS. ✅
+## 🔍 Funcionalidades Implementadas
 
-Configuração de UI: Instalar o shadcn/ui, configurar o tema escuro (Dark Mode) como padrão nativo e adicionar as fontes monoespaçadas. ✅
+### 1. Extração Forense Profunda (Sem Persistência Física)
 
-Setup do Banco: Configurar o Drizzle ORM e conectar ao PostgreSQL do Supabase. Criar as tabelas Users e Reports (com a famosa coluna JSONB), e rodar a primeira migration para deixar o banco pronto, mesmo que não vá usá-lo imediatamente. ✅
+Processamento em memória de arquivos JPEG/PNG. As imagens são analisadas no servidor e descartadas imediatamente. Nenhum arquivo de mídia é salvo em Buckets, garantindo total privacidade.
 
-Fase 2: O Motor Core (Upload e Extração) ✅
-Aqui você prova que o Next.js consegue processar arquivos de forma elegante.
+- **EXIF:** Dados de hardware, configurações de lente e exposição.
+- **XMP:** Metadados extensíveis, incluindo histórico de edição da Adobe.
+- **IPTC:** Informações editoriais e de copyright.
+- **MakerNotes:** Assinaturas proprietárias de fabricantes (Apple, Samsung, Google, etc).
 
-O Front do Upload: Criar o componente visual do Dropzone na página inicial (onde o usuário arrasta a foto). ✅
+### 2. Motor de Integridade (Audit Log)
 
-A Server Action (Fake): Criar a ação que recebe o FormData. Num primeiro momento, apenas imprima no terminal do servidor (console.log) para confirmar que o arquivo chegou inteiro. ✅
+Algoritmo avançado de auditoria (Deep Scan) que analisa todo o payload binário para classificar a imagem em três níveis:
 
-O Cérebro (exifr): Integrar a biblioteca exifr. Passar o buffer da imagem para ela e conseguir extrair o objeto JSON com os metadados brutos. ✅
+- ✅ **VERIFICADA:** Arquivo original direto da câmera, sem alterações ou anomalias temporais.
+- 🟡 **PROCESSADA / CATALOGADA:** Pixels originais preservados, mas metadados catalogados ou renomeados (ex: agências de notícias ou transferência via WhatsApp).
+- 🔴 **COMPROMETIDA:** Detecção de manipulação gráfica via Adobe Photoshop, Camera Raw ou inconsistências graves nas assinaturas de `Software` e `ModifyDate`.
 
-A Ponte: Conectar a Server Action ao Drizzle para que o JSON extraído seja salvo na tabela Reports do PostgreSQL, gerando o UUID. ✅
+### 3. Mapeamento Geoespacial Avançado
 
-Fase 3: O Dashboard Dinâmico (A Vitrine)
-Com os dados chegando no banco, é hora de dar vida aos cards e ícones que você escolheu. ✅
+Interface de mapa tático (Dark Mode) baseada nas coordenadas GPS extraídas:
 
-A Rota Dinâmica: Criar a estrutura de pastas app/analise/[id]/page.tsx. Fazer a página ler o ID da URL e buscar o JSON correspondente no PostgreSQL. ✅
+- **Ponto de Captura:** Indicador visual piscante na coordenada exata.
+- **Radar de Visão (Field of View):** Se a imagem contiver os graus do magnetômetro (`GPSImgDirection`), o mapa exibe um cone direcional indicando precisamente para onde a câmera estava apontada.
 
-O Tratamento do JSON: Criar as funções de utilidade que pegam o JSON caótico e o separam em categorias (Câmera, Localização, Configurações Técnicas). ✅
+### 4. Arquitetura e Automação
 
-A Interface de Cards: Construir os componentes visuais. Um card com ícone de satélite para o GPS, um card com ícone de lente para o hardware. ✅
+- **Arquitetura Componentizada:** Layout estruturado com componentes de servidor rápidos, evitando o uso desnecessário de Rotas Paralelas para consumos de dados oriundos da mesma tabela.
+- **Limpeza Automática (CRON):** Integração nativa com `pg_cron` no Supabase para gerenciar a política de retenção, deletando relatórios não listados automaticamente.
 
-Empty States: Programar os cards para sumirem ou mostrarem mensagens amigáveis ("Dados não encontrados") caso a foto não tenha aquela informação específica. ✅
+## 🛠️ Como Rodar Localmente
 
-Fase 4: Compartilhamento e Otimização (A UX Avançada)
-O projeto já funciona, agora vamos deixá-lo com cara de produção.
+### Pré-requisitos
 
-Rotas Paralelas e Loading: Refatorar a rota de análise usando o Suspense e loading.tsx para que a tela não congele enquanto o servidor busca os dados.
+- Node.js 20+
+- pnpm instalado (`npm install -g pnpm`)
+- Uma instância do Supabase (ou banco PostgreSQL equivalente)
 
-A Magia do Link: Garantir que qualquer pessoa que acesse a URL analise/[uuid] veja os dados (o fluxo de Guest Mode).
+### Passo a Passo
 
-Geração do Open Graph: Criar o arquivo opengraph-image.tsx para ler o banco e desenhar dinamicamente aquele "card" de preview para o WhatsApp e Slack.
+1. **Clonar o repositório:**
+   ```bash
+   git clone [https://github.com/seu-usuario/metalens.git](https://github.com/seu-usuario/metalens.git)
+   cd metalens
+   ```
+2. **Instalar dependências:**
+   ```bash
+   pnpm install
+   ```
+3. **Configurar variáveis de ambiente:**
 
-Fase 5: Autenticação e Vínculo (A Regra de Negócio)
-É aqui que você adiciona a camada de produto (o upsell).
+   Crie um arquivo .env na raiz do projeto com as seguintes chaves (substitua pelos seus dados):
 
-NextAuth (Auth.js): Configurar o login (pode ser com Google/GitHub para facilitar a vida do usuário).
+   ```bash
+   DATABASE_URL="postgres://postgres.seu_projeto:senha@aws-0-sa-east-1.pooler.supabase.com:6543/postgres"
+   ```
 
-A Lógica do Cookie: Implementar a lógica de salvar o UUID no navegador do usuário visitante.
+4. **Sincronizar o Banco de Dados (Drizzle):**
 
-O Vínculo: Criar a funcionalidade que, no momento do login ou cadastro, varre os UUIDs salvos no cookie e atualiza a coluna user_id no banco de dados, transferindo a posse dos relatórios.
+   ```bash
+   pnpm drizzle-kit push
+   ```
 
-Área Protegada: Criar uma rota /dashboard privada onde o usuário vê uma galeria com todo o seu histórico de análises.
+5. **Executar em modo desenvolvimento:**
 
-Fase 6: Segurança e Refinamento (O Polimento Sênior)
-Edge Middleware: Criar o middleware.ts para implementar proteção de rotas (redirecionar se não estiver logado no dashboard) e um rate limit simples para evitar spam no upload.
+   ```bash
+   pnpm dev
+   ```
 
-Limpeza (Cleanup): Garantir que a extração não está deixando rastros de memória e fazer os últimos testes de performance.
+### ⚙️ Configuração Adicional: Limpeza de Dados no Supabase
 
-Esta é a trilha de desenvolvimento que isola a complexidade, permitindo que você valide o projeto etapa por etapa.
+Para evitar acúmulo de dados temporários no banco, configure a rotina de exclusão diretamente no SQL Editor do Supabase:
+
+```bash
+CREATE EXTENSION IF NOT EXISTS pg_cron;
+
+SELECT cron.schedule(
+         'limpeza_relatorios_unlisted',
+         '0 3 * * *', -- Executa diariamente às 03:00 da manhã
+         $$
+             DELETE FROM reports
+             WHERE visibility = 'unlisted'
+             AND created_at <= NOW() - INTERVAL '7 days';
+         $$
+     );
+```
+
+### 📁 Estrutura de Pastas (Core)
+
+- `src/actions:` Lógica server-side para upload em memória, higienização do JSON (remoção de Null Bytes) e inserção no DB.
+
+- `src/app/analytics/[id]:` Rota mestre de análise que distribui o payload do banco para os componentes.
+
+- `src/components/forensics:` Widgets de visualização (Mapa com Leaflet, Cards de Hardware e JSON raw).
+
+- `src/lib/integrity.ts:` Utilitário forense com a inteligência de validação de edições (O "Cérebro" da plataforma).
